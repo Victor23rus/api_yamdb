@@ -42,4 +42,44 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+Документация расположена по адресу <http://localhost:8000/redoc/>
+
 Авторы: Шипулина Екатерина, Шишкин Александр, Шилигин Виктор
+
+## Работа механизма "auth"
+
+1. Отправка пользователем POST-запроса с параметрами email и username на эндпоинт /api/v1/auth/signup/
+
+    ```bash
+    POST localhost:8000/api/v1/signup/
+    Content-Type: application/json
+
+    {
+    "username": "test_user",
+    "email": "test@email.com"
+    }
+    ```
+
+2. Отправка сервисом YAMDB письма с кодом подтверждения confirmation_code на указанный email
+
+3. Отправка пользователем POST-запроса с параметрами username и confirmation_code на эндпоинт /api/v1/auth/token/, на запрос ему приходит JWT-токен
+
+Запрос на получение токена
+
+```bash
+POST localhost:8000/api/v1/auth/token/
+Content-Type: application/json
+
+{
+  "username": "test_user",
+  "password": "test_password"
+}
+```
+
+Ответ сервера
+
+```bash
+"token: ..."
+```
+
+Полученный токен используется в заголовке запроса к эндпойнтам требующих авторизации
